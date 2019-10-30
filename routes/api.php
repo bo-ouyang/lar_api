@@ -15,15 +15,18 @@ use Illuminate\Http\Request;
 
 use \Illuminate\Support\Facades\Route;
 
-Route::get('test',function (){
-	return 'test';
+Route::get('/test',function (){
+	return md5('admin');
 });
 //Route::get('/mall/home/goods','Mall\v1\HomeController@goods');
+
+
 
 
 Route::namespace('Mall')->prefix('mall')->group(function(){
 	Route::namespace('v1')->prefix('v1')->group(function(){
 		Route::get('/home/goods','HomeController@goods');
 		Route::post('/login','UserController@login');
+		Route::post('/auth','UserController@auth');
 	});
 });

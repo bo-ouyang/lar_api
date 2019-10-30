@@ -94,7 +94,7 @@ Trait BaseResponseTrait {
 	private  function make($msg, $data = null, $code = 200, $type = null, array $header = [])
 	{
 		$result = [
-			'status' => ($code == 200) ? 'success' : 'error',
+			'status' => $code,
 			'code'   => $code,
 			'msg'    => $msg,
 			'time'   => time(),
