@@ -23,8 +23,5 @@ class HomeController extends Controller
 		return Response::create($data);
 	}
 
-	public function login(Request $request){
-		echo $request->input('token');
-	}
 
 }

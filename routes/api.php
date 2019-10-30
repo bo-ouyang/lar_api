@@ -24,5 +24,6 @@ Route::get('test',function (){
 Route::namespace('Mall')->prefix('mall')->group(function(){
 	Route::namespace('v1')->prefix('v1')->group(function(){
 		Route::get('/home/goods','HomeController@goods');
+		Route::post('/login','UserController@login');
 	});
 });

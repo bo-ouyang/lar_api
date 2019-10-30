@@ -6,7 +6,7 @@ namespace App\Http\Model;
 
 use Illuminate\Database\Eloquent\Model;
 
-class User extends Model {
+class UserModel extends Model {
 		protected $table = 'user';
 		protected $dateFormat = 'U';
 }
