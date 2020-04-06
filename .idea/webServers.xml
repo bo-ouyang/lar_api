@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="WebServers">
+    <option name="servers">
+      <webServer id="2fb54ab8-43cd-4552-92bc-a12ab65ed41b" name="api" url="http://49.233.201.142/">
+        <fileTransfer host="49.233.201.142" port="22" rootFolder="/www/wwwroot/api.ouyang.wiki" accessType="SFTP">
+          <advancedOptions>
+            <advancedOptions dataProtectionLevel="Private" passiveMode="true" shareSSLContext="true" />
+          </advancedOptions>
+          <option name="port" value="22" />
+        </fileTransfer>
+      </webServer>
+    </option>
+  </component>
+</project>

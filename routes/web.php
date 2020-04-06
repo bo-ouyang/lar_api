@@ -13,6 +13,7 @@
 
 
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Route;
 /*
 Route::get('/','home\IndexController@index');
 Route::get('/category','home\IndexController@category');
@@ -35,11 +36,6 @@ Route::post('/emailExist',function (){
 	return $uid==null?['info'=>'邮箱可以使用','status'=>'y']:['info'=>'该邮箱已被使用','status'=>'n'];
 });*/
 
-/*
-Route::middleware('CheckLogin')->group(function (){
 
-});
 
-Route::middleware()->namespace('Admin')->group(function (){
 
-});*/

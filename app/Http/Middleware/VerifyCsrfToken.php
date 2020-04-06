@@ -20,6 +20,10 @@ class VerifyCsrfToken extends Middleware
      */
     protected $except = [
         //
-	    '/emailExist'
+	    '/emailExist',
+        '/wx/checkToken',
+        '/wx/server',
+        '/api/*'
     ];
+
 }

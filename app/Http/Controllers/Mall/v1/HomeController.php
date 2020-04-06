@@ -4,6 +4,8 @@ namespace App\Http\Controllers\Mall\v1;
 
 
 use App\Http\Controllers\Controller;
+use App\Http\Model\GoodsAlbumModel;
+use App\Http\Model\GoodsCateModel;
 use App\Http\Model\GoodsModel;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
@@ -19,20 +21,21 @@ class HomeController extends Controller
 
 	}
 	public function goods(Request $request){
-
        // return Response::create(1111);
-
-
     	$order = $request->get('order','goods_id');
-    	$sort  =  $request->get('sort',1)>0?'asc':'desc';
+    	$sort  =  $request->get('sort',1)>0?'desc':'asc';
     	$page = $request->get('page',0);
-    	//dd($data['goods']=DB::table('goods')->orderBy($order,$sort)->forPage($page,10));
-            $data['goods']=DB::table('goods')->orderBy($order,$sort)->forPage($page,10)->get()->each(function ($item,$value){
-                //dump($item->goods_image);
-                if($item){
-                    $item->goods_image = GoodsModel::$IMAGE_BASE_URL.$item->goods_image;
-                }
-            });
+    	$cid  = $request->get('cid',0);
+    	if($cid){
+            $data['goods']= GoodsModel::where(['cate_id'=>$cid,'seckill'=>0])->orderBy($order,$sort)->offset(10*$page)->limit(10)->get()->toArray();
+        }
+        $data['goods']= GoodsModel::where(['seckill'=>0])->orderBy($order,$sort)->offset(10*($page-1))->limit(10)->get()->toArray();
+        $data['goodsKill']= GoodsModel::where(['seckill'=>1])->orderBy($order,$sort)->offset(10*($page-1))->limit(10)->get()->toArray();
+        $data['activity_image']= [
+            'new'=>GoodsModel::$IMAGE_ACTIVITY_URL.'new.png',
+            'recommend'=>GoodsModel::$IMAGE_ACTIVITY_URL.'recommend.png',
+            'discount'=>GoodsModel::$IMAGE_ACTIVITY_URL.'discount.png'
+        ];
 		$data['category']=DB::table('goods_cate')->where(['parent_id'=>0])->get();
 		return Response::create($data);
 	}
@@ -42,11 +45,7 @@ class HomeController extends Controller
             return $this->error('10002','param error',[]);
         }
         $GoodsDetail = [];
-        $GoodsDetail['goods'] = DB::table('goods')->where(['goods_id'=>$id])->first();
-        $GoodsDetail['goods']->goods_image = 'http://mall.ouyang.wiki/static/Uploads/temp/'.$GoodsDetail['goods']->goods_image;
-       /* $GoodsDetail->type = DB::table('goods_optional')
-            ->join('goods_optional_type','goods_optional.type_id','=','goods_optional_type.type_id')
-            ->where('goods_optional.goods_id',$id)->distinct()->get();*/
+        $GoodsDetail['goods'] = GoodsModel::where('goods_id',$id)->first();
         $GoodsDetail['type'] = DB::table('goods_optional')
             ->join('goods_optional_type','goods_optional.type_id','=','goods_optional_type.type_id')
             ->where('goods_optional.goods_id',$id)
@@ -55,12 +54,8 @@ class HomeController extends Controller
         foreach ($GoodsDetail['type'] as $v){
             $GoodsDetail['type_list'] = DB::table('goods_optional')->where(['goods_id'=>$id])->get();
         }
-
-
-        $GoodsDetail['album'] =  DB::table('goods_album')->where('goods_id',$id)->get('image')->each(function($item,$value){
-            return $item->image = GoodsModel::$IMAGE_BASE_URL.$item->image;
-        });
-        //$GoodsDetail->goods->goods_image = 'http://mall.ouyang.wiki/static/Uploads/temp/'.$GoodsDetail->goods->goods_image;
+        $GoodsDetail['album'] = GoodsAlbumModel::where('goods_id',$id)->get()->toArray();
+        $GoodsDetail['album'][]['image'] = $GoodsDetail['goods']->goods_image;
         $GoodsDetail['goods_review']['content'] = DB::table('goods_review')->where('goods_id',$id)->get();
         $GoodsDetail['goods_review']['counts'] = count($GoodsDetail['goods_review']);
         $GoodsDetail['goods_review']['rate'] = 0;

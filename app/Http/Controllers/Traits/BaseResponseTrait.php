@@ -111,7 +111,8 @@ Trait BaseResponseTrait {
 			$code = ($code >= 1000 || $code < 200) ? 200 : $code;
 		}
        // return Response::create($result);
-		return response()->json($result,$code,$header);
+        return response($result,$code,$header);
+		//return response()->json($result,$code,$header);
 	}
 
 }

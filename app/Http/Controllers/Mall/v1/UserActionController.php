@@ -44,25 +44,8 @@ class UserActionController extends Controller
 
     }
 
-    public function CreateOrder(Request $request){
-        $param = $request->post();
 
-        $temp  = explode('_',$param['goods_id']) ;
 
-        //dump($temp);die();
-
-        $goodsId = array_shift($temp);
-       // print_r($temp);
-        $data['address'] = DB::table('user_consignee')->where(['user_id'=>$param['user_id'],'is_default'=>1])->first();
-        $data['goods']   = DB::table('goods')->where('goods_id',$goodsId)->first();
-        $data['goods']->goods_image = GoodsModel::$IMAGE_BASE_URL.$data['goods']->goods_image;
-        $data['option']  = DB::table('goods_optional')->whereIn('id',$temp)->get();
-       return  $this->success($data,10000,'返回成功');
-    }
-
-    public function Order(Request $request){
-        $data = $request->post();
-    }
     public function Tofavorite(){
 
     }
